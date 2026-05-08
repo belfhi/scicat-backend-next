@@ -31,11 +31,11 @@ export class URLJobAction<T extends JobDto> implements JobAction<T> {
         method: this.method,
         headers: this.headerTemplates
           ? Object.fromEntries(
-              Object.entries(this.headerTemplates).map(([key, template]) => [
-                key,
-                template(context),
-              ]),
-            )
+            Object.entries(this.headerTemplates).map(([key, template]) => [
+              key,
+              template(context),
+            ]),
+          )
           : undefined,
         body: this.bodyTemplate ? this.bodyTemplate(context) : undefined,
       };

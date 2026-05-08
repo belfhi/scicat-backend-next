@@ -53,6 +53,7 @@ export interface JobValidateContext<DtoType extends JobDto> {
   job?: JobClass; // Either the previous value (validate) or the new value (perform)
   datasets: DatasetClass[]; // Should be set lazily when needed
   env: Record<string, string | undefined>;
+  userToken?: string; // user's JWT token from Job Request
 }
 /**
  * Encapsulates the data available to jobs during the perform phase

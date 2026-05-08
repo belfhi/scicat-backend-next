@@ -106,6 +106,13 @@ export class JobClass extends OwnableClass {
     default: {},
   })
   jobResultObject: Record<string, unknown>;
+
+  @Prop({
+    type: String,
+    required: false,
+    default: "",
+  })
+  userToken?: string;
 }
 export const JobSchema = SchemaFactory.createForClass(JobClass);
 
