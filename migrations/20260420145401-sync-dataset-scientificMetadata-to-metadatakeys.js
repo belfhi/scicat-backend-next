@@ -18,12 +18,33 @@ function buildPipeline(sourceType) {
         datasetId: 1,
         key: "$metaArr.k",
         isPublished: 1,
-        humanReadableName: { $ifNull: ["$metaArr.v.human_name", ""] },
+        // 👇 SAFE EXTRACTION LOGIC
+        humanReadableName: {
+          $let: {
+            vars: {
+              rawName: {
+                $cond: {
+                  if: { $isArray: "$metaArr.v.human_name" },
+                  then: { $arrayElemAt: ["$metaArr.v.human_name", 0] },
+                  else: "$metaArr.v.human_name"
+                }
+              }
+            },
+            in: {
+              $cond: {
+                if: { $eq: [{ $type: "$$rawName" }, "string"] },
+                then: "$$rawName",
+                else: ""
+              }
+            }
+          }
+        },
         userGroups: {
           $setUnion: [["$ownerGroup"], { $ifNull: ["$accessGroups", []] }],
         },
       },
     },
+    // ... rest of your pipeline stages remain exactly the same
     {
       $unwind: {
         path: "$userGroups",
