@@ -175,6 +175,9 @@ Valid environment variables for the .env file. See [.env.example](/.env.example)
 | `DOI_SHORT_SUFFIX` | string | | By default `uuidv4` is used to generate the DOI suffix but if this flag is `true` the shorter version of 10 random characters is used as DOI suffix. | |
 | `DOI_USERNAME` | string | | The facility DOI DataCite username. | |
 | `DOI_PASSWORD` | string | | The facility DOI DataCite password. | |
+| `REGISTER_DOI_URI` | string | | URI to the organization that registers the facility's DOIs using the new DataCite API. |"https://api.test.datacite.org/dois"|
+| `REGISTER_DOI_URI_V3` | string | | URI to the organization that registers the facility's DOIs using the old DataCite API. |"https://mds.test.datacite.org/doi"|
+| `REGISTER_METADATA_URI` | string | | URI to the organization that registers the facility's published data metadata. |"https://mds.test.datacite.org/metadata"|
 | `PUBLISHED_DATA_CONFIG_FILE` | string | | Path to the file containing the metadata and UI schemas for PublishedData. | `"publishedDataConfig.json"`  |
 | `AJV_CUSTOM_DEFINITIONS_FILE` | string | | The path to a JavaScript module that defines custom AJV keywords or dynamic defaults functions. | |
 | `EXPRESS_SESSION_SECRET` | string | No | Secret used to set up express session. Required if using OIDC authentication | |
@@ -227,11 +230,6 @@ Valid environment variables for the .env file. See [.env.example](/.env.example)
 |`RABBITMQ_USERNAME`| string | Yes | The username used to authenticate to the RabbitMQ message broker. Only required if RabbitMQ is enabled. | |
 |`RABBITMQ_PASSWORD`| string | Yes | The password used to authenticate to the RabbitMQ message broker. Only required if RabbitMQ is enabled. | |
 |`RABBITMQ_PORT`| number | Yes | The port of the RabbitMQ message broker. Only required if RabbitMQ is enabled. |5672|
-|`REGISTER_DOI_URI`| string | | URI to the organization that registers the facility's DOIs using the new DataCite API. |"https://api.test.datacite.org/dois"|
-|`REGISTER_DOI_URI_V3`| string | | URI to the organization that registers the facility's DOIs using the old DataCite API. |"https://mds.test.datacite.org/doi"|
-|`REGISTER_METADATA_URI`| string | | URI to the organization that registers the facility's published data metadata. |"https://mds.test.datacite.org/metadata"|
-|`DOI_USERNAME`| string | Yes | DOI Username. |"username"|
-|`DOI_PASSWORD`| string | Yes | DOI Password. |"password"|
 |`SITE`| string | | The name of your site. | |
 |`EMAIL_TYPE`| string | Yes | The type of your email provider. Options are "smtp" or "ms365".  | "smtp" |
 |`EMAIL_FROM`| string | Yes | Email address that emails should be sent from. | |
