@@ -107,12 +107,16 @@ export class JobClass extends OwnableClass {
   })
   jobResultObject: Record<string, unknown>;
 
+  /**
+   * User ID extracted from the JWT token at job creation.
+   * Used to generate short-lived tokens at job execution time.
+   */
   @Prop({
     type: String,
     required: false,
     default: "",
   })
-  userToken?: string;
+  userId?: string;
 }
 export const JobSchema = SchemaFactory.createForClass(JobClass);
 

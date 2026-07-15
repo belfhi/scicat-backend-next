@@ -38,7 +38,7 @@ export class JobsService {
     @InjectModel(JobClass.name) private jobModel: Model<JobDocument>,
     @Inject(REQUEST) private request: Request,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   getUsername(): string {
     if (this.request.user as JWTUser) {
@@ -51,12 +51,9 @@ export class JobsService {
   async create(createJobDto: JobClass): Promise<JobDocument> {
     const username = this.getUsername();
 
-    // Extract the JWT from the Authorization header
-    const authHeader = this.request.headers.authorization;
-    const userToken =
-      authHeader && authHeader.startsWith("Bearer ")
-        ? authHeader.split(" ")[1]
-        : undefined;
+    // Extract userId from the authenticated user's JWT payload
+    const jwtUser = this.request.user as JWTUser;
+    const userId = jwtUser?._id;
 
     const jobData = addCreatedByFields(createJobDto, username);
 
@@ -68,10 +65,10 @@ export class JobsService {
       createJobDto.statusMessage ||
       this.configService.get<string>("jobDefaultStatusMessage")!;
 
-    // Merge the userToken into the document before saving
+    // Merge the userId into the document before saving
     const createdJob = new this.jobModel({
       ...this.addStatusFields(jobData, statusCode, statusMessage),
-      userToken, // This must be defined in your Job schema/DTO
+      userId, // Store user ID for generating short-lived tokens at execution time
     });
 
     return createdJob.save();
@@ -87,8 +84,8 @@ export class JobsService {
     const { limit, skip, sort } = parseLimitFilters(limits);
     const filters = access
       ? {
-        $and: [baseFilter, access],
-      }
+          $and: [baseFilter, access],
+        }
       : baseFilter;
     return this.jobModel
       .find(filters)
