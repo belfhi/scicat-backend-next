@@ -28,12 +28,7 @@ export function compileJobTemplate(
 ): TemplateJob {
   const template: TemplateJob = hb.compile<JobTemplateContext>(input, options);
   return (context: JobTemplateContext, options?: RuntimeOptions) => {
-    // Inject userToken into the top level of the context
-    const enrichedContext = {
-      ...context,
-      userToken: context.userToken,
-    };
-    return template(enrichedContext, {
+    return template(context, {
       ...options,
     });
   };
