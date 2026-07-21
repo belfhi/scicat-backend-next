@@ -178,6 +178,11 @@ export function regexMatches(
   const flags = args.pop() as string | undefined;
   return RegExp(regex, flags).test(query);
 }
+
+export const exchangeString = (registerDoiUri: string, search: string, replacement: string): string => {
+    return registerDoiUri.replace(search, replacement);
+};
+
 export const handlebarsHelpers: hb.HelperDeclareSpec = {
   unwrapJSON: unwrapJSON,
   keyToWord: formatCamelCase,
@@ -194,4 +199,5 @@ export const handlebarsHelpers: hb.HelperDeclareSpec = {
   base64enc: base64enc,
   base64dec: atob,
   formatUnit: formatUnit,
+  exchangeString: exchangeString,
 };
