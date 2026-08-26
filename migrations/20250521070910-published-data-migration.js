@@ -11,12 +11,13 @@ module.exports = {
           scicatUser: publishedData.scicatUser,
           thumbnail: publishedData.thumbnail,
           url: publishedData.url,
-          creators: publishedData.creator.map((creator) => ({
+          // Add null check for creator
+          creators: (publishedData.creator || []).map((creator) => ({
             name: creator.trim(),
             affiliation: [{ name: publishedData.affiliation?.trim() || "" }],
           })),
           publisher: {
-            name: publishedData.publisher.trim(),
+            name: publishedData.publisher?.trim() || "",
           },
           publicationYear: publishedData.publicationYear,
           dataDescription: publishedData.dataDescription,
@@ -33,7 +34,6 @@ module.exports = {
         const datasetPids = publishedData.pidArray;
         const status =
           publishedData.status === "registered" ? "registered" : "private";
-
         console.log(`Updating PublishedData (Id: ${pid})`);
         await db.collection("PublishedData").updateOne(
           { _id: pid },
@@ -73,23 +73,24 @@ module.exports = {
           { _id: publishedData._id },
           {
             $set: {
-              affiliation: publishedData.metadata.affiliation,
-              downloadLink: publishedData.metadata.downloadLink,
-              scicatUser: publishedData.metadata.scicatUser,
-              thumbnail: publishedData.metadata.thumbnail,
-              url: publishedData.metadata.url,
-              creator: publishedData.metadata.creators.map(
+              affiliation: publishedData.metadata?.affiliation,
+              downloadLink: publishedData.metadata?.downloadLink,
+              scicatUser: publishedData.metadata?.scicatUser,
+              thumbnail: publishedData.metadata?.thumbnail,
+              url: publishedData.metadata?.url,
+              // Add null check here too for safety
+              creator: (publishedData.metadata?.creators || []).map(
                 (creator) => creator.name,
               ),
-              publisher: publishedData.metadata.publisher.name,
-              publicationYear: publishedData.metadata.publicationYear,
-              dataDescription: publishedData.metadata.dataDescription,
-              resourceType: publishedData.metadata.resourceType,
-              authors: publishedData.metadata.contributors?.map(
+              publisher: publishedData.metadata?.publisher?.name || "",
+              publicationYear: publishedData.metadata?.publicationYear,
+              dataDescription: publishedData.metadata?.dataDescription,
+              resourceType: publishedData.metadata?.resourceType,
+              authors: publishedData.metadata?.contributors?.map(
                 (contributor) => contributor.name,
               ),
               relatedPublications:
-                publishedData.metadata.relatedIdentifiers?.map(
+                publishedData.metadata?.relatedIdentifiers?.map(
                   (relatedIdentifier) => relatedIdentifier.relatedIdentifier,
                 ),
               pidArray: publishedData.datasetPids,
