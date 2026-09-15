@@ -483,3 +483,18 @@ export const DatasetSchema = SchemaFactory.createForClass(DatasetClass);
 DatasetSchema.index({ "$**": "text" });
 DatasetSchema.index({ "relationships.identifier": 1 });
 DatasetSchema.index({ "relationships.externalId": 1 });
+
+const filterFields = [
+  "sampleIds",
+  "keywords",
+  "ownerGroup",
+  "creationLocation",
+  "type",
+  "owner",
+  "datasetName",
+  "proposalIds",
+];
+
+filterFields.forEach((field) => {
+  DatasetSchema.index({ [field]: 1, createdAt: -1 });
+});
